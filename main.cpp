@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-
+#include <chrono>
 Graph* read_dimacs_max_flow(std::istream& in) {
     std::string line;
     int n, m, s = -1, t = -1;
@@ -40,10 +40,26 @@ Graph* read_dimacs_max_flow(std::istream& in) {
     return g;
 }
 
+// g++ graph.cpp main.cpp -o run
+// ./gengraph 1 10 10 100 out.dimacs; ./run < out.dimacs 
+// ./gengraph 2 100 10 1000 out.dimacs; ./maxflow < out.dimacs
+
+
 int main() {
     Graph* g = read_dimacs_max_flow(std::cin);
     if (g) {
-        std::cout << "Max Flow from source to sink: " << g->EdmondsKarp() << std::endl;
+        auto start = std::chrono::high_resolution_clock::now();
+        std::cout << "Starting EK" << std::endl;
+        std::cout << "Max Flow from source to sink: " << g->EdmondsKarp() << std::endl; 
+        auto end = std::chrono::high_resolution_clock::now(); // End timing
+        std::chrono::duration<double> elapsed = end - start; // Calculate elapsed time
+        
+        
+        std::cout << "Elapsed time: " << elapsed.count() << " seconds." << std::endl;
+        std::cout << "Vertices: " << g->V << std::endl;
+        std::cout << "Edges: " << g->M << std::endl;
+        std::cout << "BFS: " << g->bfs_iterations << " calls (" << g->bfs_calls << ')' << std::endl;
+        std::cout << "Augment: " << g->aug_calls << std::endl;
         delete g; // Clean up dynamically allocated memory
     } else {
         std::cerr << "Graph initialization failed." << std::endl;

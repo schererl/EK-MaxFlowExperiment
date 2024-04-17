@@ -15,10 +15,11 @@ struct Edge {
         : u(_u), v(_v), capacity(_capacity), flow(0), reverse(nullptr) {}
 };
 
-Graph::Graph(int V, int source, int sink):V(V),s(source),t(sink),adj_lst(V){}
+Graph::Graph(int V, int source, int sink):V(V), M(0), s(source),t(sink),adj_lst(V){}
 
 //add or update weight for edges forward edge (u,v) and backward edge(v,u)
 void Graph::addEdge(int u, int v, int c){
+    M+=1;
     for(auto *edge : adj_lst[u]){
         if(edge->u == u && edge->v == v){
             edge->capacity += c;
@@ -37,12 +38,14 @@ void Graph::addEdge(int u, int v, int c){
 
 
 bool Graph::bfsFindPath(std::vector<Edge*> &edge_path) {
+    bfs_calls+=1;
     std::fill(edge_path.begin(), edge_path.end(), nullptr); 
     std::vector<bool> visited(V, false);
     std::queue<int> q;
     q.push(s);
     edge_path[s]=nullptr;
     while(!q.empty()){
+        bfs_iterations+=1;
         int u = q.front();
         q.pop();
         visited[u] = true;
@@ -64,15 +67,16 @@ bool Graph::bfsFindPath(std::vector<Edge*> &edge_path) {
 
 
 int Graph::augment(std::vector<Edge*>&edge_path) {
+    aug_calls+=1;
     int path_flow = INT_MAX;
 
-    // Find minimum residual capacity (bottleneck)
+    // find minimum residual capacity (bottleneck)
     for (int v = t; edge_path[v] != nullptr; v = edge_path[v]->u) {
         Edge *e = edge_path[v];
         path_flow = std::min(path_flow, e->capacity - e->flow);
     }
     
-    // Update residual capacities of the forward edges and backward (reverse) edges along the path
+    // update residual capacities of the forward edges and backward (reverse) edges along the path
     for (int v = t; edge_path[v] != nullptr; v = edge_path[v]->u) {
         Edge* e = edge_path[v];
         e->flow += path_flow;
@@ -83,9 +87,9 @@ int Graph::augment(std::vector<Edge*>&edge_path) {
 
 int Graph::EdmondsKarp() {
     int max_flow = 0;
-    std::vector<Edge *> edge_path(V); // we use V-1 nodes but we consider s with a null edge
+    std::vector<Edge *> edge_path(V);
     
-    // while there exists an augmenting path, increment the flow
+    // while there exists an augmenting path, push flow
     while (bfsFindPath(edge_path)) {
         augment(edge_path);
     }

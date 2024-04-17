@@ -9,13 +9,17 @@ struct Edge;
 
 class Graph {
 private:
-    int V;
     int s; //source
     int t; //sink
     std::vector<std::list<Edge*>> adj_lst;
-    
-
 public:
+    //counting variables
+    int bfs_calls;
+    int bfs_iterations;
+    int aug_calls;
+    int M;
+    int V;    
+    
     Graph(int V, int src, int dst);
     void addEdge(int u, int v, int c);
     bool bfsFindPath(std::vector<Edge*> &edge_path);

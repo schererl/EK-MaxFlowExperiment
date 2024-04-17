@@ -2,13 +2,14 @@
 Assignment on Maximum Flow Problem - Advanced Algorithms Course (UFRGS) 
 
 # TODO:
-- [ ] Count the number of operations in BFS.
-- [ ] Count the number of augmentations.
+- [x] Count the number of operations in BFS.
+- [x] Count the number of augmentations.
 - [ ] Count the total number of operations, divide by its theoretical bound O(nm**2)
-- [ ] Count the number of times a single edge is saturated.
+- [x] Count the number of times a single edge is saturated.
 - [ ] Create a Bash script to run operations experiments.
 - [ ] Develop a Python script for plotting experiments.
-
+- [ ] Compute the path size over each augmentation.
+- [ ] Count the number of times each edge is a critical edge 
 # Assignment 
 ## Deadline: May 1, 2024.
 
