@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <chrono>
+
 Graph* read_dimacs_max_flow(std::istream& in) {
     std::string line;
     int n, m, s = -1, t = -1;
@@ -56,11 +57,11 @@ int main() {
         
         
         std::cout << "Elapsed time: " << elapsed.count() << " seconds." << std::endl;
-        std::cout << "Vertices: " << g->V << std::endl;
-        std::cout << "Edges: " << g->M << std::endl;
-        std::cout << "BFS: " << g->bfs_iterations << " calls (" << g->bfs_calls << ')' << std::endl;
-        std::cout << "Augment: " << g->aug_calls << std::endl;
-        delete g; // Clean up dynamically allocated memory
+        g->printCritialPath();
+        g->printMinimumPath();
+        g->printBFSPath();
+        g->printGraphInfo();
+        delete g;
     } else {
         std::cerr << "Graph initialization failed." << std::endl;
         return 1;

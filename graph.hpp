@@ -12,13 +12,18 @@ private:
     int s; //source
     int t; //sink
     std::vector<std::list<Edge*>> adj_lst;
-public:
-    //counting variables
-    int bfs_calls;
-    int bfs_iterations;
-    int aug_calls;
     int M;
     int V;    
+    
+    // experimental stuff
+    std::vector<int> minimum_path_size;
+    std::vector<int> bfs_iterations;
+    int bfs_calls;
+    int aug_calls;
+
+public:
+    
+    
     
     Graph(int V, int src, int dst);
     void addEdge(int u, int v, int c);
@@ -29,6 +34,10 @@ public:
     void printPath(std::vector<Edge*>& edge_path);
     void printVertex(int u);
     void printGraph();
+    void printCritialPath();
+    void printMinimumPath();
+    void printBFSPath();
+    void printGraphInfo();
     ~Graph();
 };
 
