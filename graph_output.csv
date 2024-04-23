@@ -1,0 +1,93 @@
+Vertices,Edges,BFS Calls,Augment Calls,Max Flow,Elapsed Time,Sum BFS Iterations,Average BFS Iterations,Std Dev BFS Iterations
+Starting EK
+Max Flow from source to sink: 4095
+Elapsed time: 5.44e-05 seconds.
+Critical Path Edge Counts:
+Number of edges that were part of critical paths: 0
+Minimum Path Sizes: 3 3 3 3 
+Sum of BFS Iterations: 19
+Average BFS Iterations: 3.8
+Standard Deviation of BFS Iterations: 0.4
+Vertices: 6
+Edges: 8
+BFS calls (5)
+Augment: 4
+Starting EK
+Max Flow from source to sink: 2343
+Elapsed time: 6.2501e-05 seconds.
+Critical Path Edge Counts:
+Number of edges that were part of critical paths: 0
+Minimum Path Sizes: 5 5 5 5 5 5 
+Sum of BFS Iterations: 73
+Average BFS Iterations: 10.4286
+Standard Deviation of BFS Iterations: 3.37457
+Vertices: 10
+Edges: 16
+BFS calls (7)
+Augment: 6
+Starting EK
+Max Flow from source to sink: 1088
+Elapsed time: 0.000259081 seconds.
+Critical Path Edge Counts:
+Number of edges that were part of critical paths: 0
+Minimum Path Sizes: 9 9 9 9 9 9 9 
+Sum of BFS Iterations: 1165
+Average BFS Iterations: 145.625
+Standard Deviation of BFS Iterations: 67.8379
+Vertices: 18
+Edges: 32
+BFS calls (8)
+Augment: 7
+Starting EK
+Max Flow from source to sink: 1088
+Elapsed time: 0.0508552 seconds.
+Critical Path Edge Counts:
+Number of edges that were part of critical paths: 0
+Minimum Path Sizes: 17 17 17 17 17 17 17 17 17 17 17 17 17 
+Sum of BFS Iterations: 242143
+Average BFS Iterations: 17295.9
+Standard Deviation of BFS Iterations: 19465.5
+Vertices: 34
+Edges: 64
+BFS calls (14)
+Augment: 13
+Starting EK
+Max Flow from source to sink: 6438
+Elapsed time: 4.9e-05 seconds.
+Critical Path Edge Counts:
+Number of edges that were part of critical paths: 0
+Minimum Path Sizes: 3 3 3 3 3 3 3 3 3 3 3 3 
+Sum of BFS Iterations: 77
+Average BFS Iterations: 5.92308
+Standard Deviation of BFS Iterations: 0.266469
+Vertices: 10
+Edges: 20
+BFS calls (13)
+Augment: 12
+Starting EK
+Max Flow from source to sink: 3575
+Elapsed time: 0.000281002 seconds.
+Critical Path Edge Counts:
+Number of edges that were part of critical paths: 0
+Minimum Path Sizes: 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+Sum of BFS Iterations: 839
+Average BFS Iterations: 41.95
+Standard Deviation of BFS Iterations: 6.5075
+Vertices: 18
+Edges: 44
+BFS calls (20)
+Augment: 19
+Starting EK
+Max Flow from source to sink: 3344
+Elapsed time: 0.0146142 seconds.
+Critical Path Edge Counts:
+Number of edges that were part of critical paths: 0
+Minimum Path Sizes: 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+Sum of BFS Iterations: 46242
+Average BFS Iterations: 1127.85
+Standard Deviation of BFS Iterations: 1228.36
+Vertices: 34
+Edges: 92
+BFS calls (41)
+Augment: 40
+Starting EK

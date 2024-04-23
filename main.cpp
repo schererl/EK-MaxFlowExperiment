@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <chrono>
+
 
 Graph* read_dimacs_max_flow(std::istream& in) {
     std::string line;
@@ -49,18 +49,9 @@ Graph* read_dimacs_max_flow(std::istream& in) {
 int main() {
     Graph* g = read_dimacs_max_flow(std::cin);
     if (g) {
-        auto start = std::chrono::high_resolution_clock::now();
-        std::cout << "Starting EK" << std::endl;
-        std::cout << "Max Flow from source to sink: " << g->EdmondsKarp() << std::endl; 
-        auto end = std::chrono::high_resolution_clock::now(); // End timing
-        std::chrono::duration<double> elapsed = end - start; // Calculate elapsed time
         
-        
-        std::cout << "Elapsed time: " << elapsed.count() << " seconds." << std::endl;
-        g->printCritialPath();
-        g->printMinimumPath();
-        g->printBFSPath();
-        g->printGraphInfo();
+        g->EdmondsKarp();
+        g->exportCSV();
         delete g;
     } else {
         std::cerr << "Graph initialization failed." << std::endl;

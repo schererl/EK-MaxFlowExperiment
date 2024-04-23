@@ -18,6 +18,7 @@ private:
     // experimental stuff
     std::vector<int> minimum_path_size;
     std::vector<int> bfs_iterations;
+    std::chrono::duration<double> elapsed_time;
     int bfs_calls;
     int aug_calls;
 
@@ -34,10 +35,12 @@ public:
     void printPath(std::vector<Edge*>& edge_path);
     void printVertex(int u);
     void printGraph();
+    void printElapsedTime();
     void printCritialPath();
     void printMinimumPath();
     void printBFSPath();
     void printGraphInfo();
+    void exportCSV();
     ~Graph();
 };
 

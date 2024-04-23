@@ -8,8 +8,18 @@ Assignment on Maximum Flow Problem - Advanced Algorithms Course (UFRGS)
 - [x] Count the number of times a single edge is saturated.
 - [ ] Create a Bash script to run operations experiments.
 - [ ] Develop a Python script for plotting experiments.
-- [ ] Compute the path size over each augmentation.
-- [ ] Count the number of times each edge is a critical edge 
+- [x] Compute the path size over each augmentation.
+- [x] Count the number of times each edge is a critical edge 
+
+# Test Plan
+
+Run each test for 5 minutes at most. Use 3 maps Mesh, Random Level, Matching. 
+Use the following paramaters
+2 2 1000, 4 2 1000, 8 2 1000, 16 2 1000
+2 4 1000, 4 4 100, 8 4 1000, 16 4 1000
+2 8 1000, 4 8 1000, 8 8 1000, 16 8 1000
+2 16 1000, 4 16 100, 8 16 1000, 16 16 1000
+
 # Assignment 
 ## Deadline: May 1, 2024.
 

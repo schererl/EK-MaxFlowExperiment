@@ -5,7 +5,10 @@
 #include <climits>
 #include <tuple>
 #include <complex>
-
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <chrono>
 struct Edge {
     int u, v;
     int capacity;
@@ -96,6 +99,7 @@ int Graph::augment(std::vector<Edge*>&edge_path) {
 }
 
 int Graph::EdmondsKarp() {
+    auto start = std::chrono::high_resolution_clock::now();
     int max_flow = 0;
     std::vector<Edge *> edge_path(V);
     
@@ -104,6 +108,8 @@ int Graph::EdmondsKarp() {
         augment(edge_path);
     }
     for(Edge *e:adj_lst[t]){ max_flow+=e->reverse->flow;}
+    auto end = std::chrono::high_resolution_clock::now();
+    elapsed_time = end - start; // Calculate elapsed time
     return max_flow;
 }
 
@@ -145,6 +151,10 @@ void Graph::printGraph(){
         }
         std::cout << std::endl;
     }
+}
+
+void Graph::printElapsedTime(){
+    std::cout << "Elapsed time: " << elapsed_time.count() << " seconds." << std::endl;
 }
 
 void Graph::printCritialPath(){
@@ -197,6 +207,23 @@ void Graph::printGraphInfo(){
     std::cout << "Edges: " << M << std::endl;
     std::cout << "BFS calls (" << bfs_calls << ')' << std::endl;
     std::cout << "Augment: " << aug_calls << std::endl;
+}
+
+void Graph::exportCSV() {
+    
+    // Collecting necessary data
+    int sum_iterations = 0, total_calls = bfs_iterations.size();
+    for (int iter : bfs_iterations) {
+        sum_iterations += iter;
+    }
+    double avg_iterations = total_calls > 0 ? static_cast<double>(sum_iterations) / total_calls : 0;
+    double variance = 0;
+    for (int iter : bfs_iterations) {
+        variance += (iter - avg_iterations) * (iter - avg_iterations);
+    }
+    double stddev_iterations = total_calls > 0 ? std::sqrt(variance / total_calls) : 0;
+
+    std::cout << V << ',' << M << ',' << bfs_calls << ',' << aug_calls << ','<< elapsed_time.count() << ',' << sum_iterations << ',' << avg_iterations << ',' << stddev_iterations << std::endl;
 }
 
 Graph::~Graph() {
