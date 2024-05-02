@@ -51,7 +51,8 @@ int main() {
     if (g) {
         
         g->EdmondsKarp();
-        g->exportCSV();
+        //g->exportCSV(); // experiments
+        std::cout << g->last_mflow << std::endl; // assignment
         delete g;
     } else {
         std::cerr << "Graph initialization failed." << std::endl;

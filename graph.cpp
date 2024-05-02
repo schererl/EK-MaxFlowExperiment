@@ -8,7 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include <chrono>
+
 struct Edge {
     int u, v;
     int capacity;
@@ -46,29 +46,37 @@ bool Graph::bfsFindPath(std::vector<Edge*> &edge_path) {
     std::fill(edge_path.begin(), edge_path.end(), nullptr); 
     std::vector<bool> visited(V, false);
     std::queue<int> q;
+    visited[s]=true;
     q.push(s);
     edge_path[s]=nullptr;
 
     int iterations = 0;
+    int v_arcs=0;
     while(!q.empty()){
         iterations+=1;
         int u = q.front();
         q.pop();
-        visited[u] = true;
+        
         for (Edge* edge : adj_lst[u]) {
             if (!visited[edge->v] && edge->capacity - edge->flow > 0) {
+                visited[edge->v] = true;
                 edge_path[edge->v] = edge;
+                v_arcs+=1;
                 if(edge->v == t){
+                    bfs_count_op.emplace_back(v_arcs);
+                    visited_arcs_bfs.emplace_back(v_arcs);
+                    visited_nodes_bfs.emplace_back(iterations);
+
                     while (!q.empty()) q.pop();
-                    bfs_iterations.emplace_back(iterations);
                     return true;
                 } 
                 q.push(edge->v);
             }
         }
     }
-
-    bfs_iterations.emplace_back(iterations);
+    visited_arcs_bfs.emplace_back(v_arcs);
+    visited_nodes_bfs.emplace_back(iterations);
+    bfs_count_op.emplace_back(v_arcs);
     while (!q.empty()) q.pop();
     return false;
 }
@@ -86,15 +94,19 @@ int Graph::augment(std::vector<Edge*>&edge_path) {
     }
     
     minimum_path_size.emplace_back(path_size);
-
+    int cedgedc=0;
     // update residual capacities of the forward edges and backward (reverse) edges along the path
     for (int v = t; edge_path[v] != nullptr; v = edge_path[v]->u) {
         Edge* e = edge_path[v];
-        if(e->capacity-e->flow == path_flow) e->cpath_count+=1; //experimental stuff
+        if(e->capacity-e->flow == path_flow) { //experimental stuff
+            e->cpath_count+=1; 
+            cedgedc+=1;
+        }
         e->flow += path_flow;
         e->reverse->flow -= path_flow;
         
     }
+    crit_edges_count.emplace_back(cedgedc);
     return path_flow;
 }
 
@@ -108,8 +120,11 @@ int Graph::EdmondsKarp() {
         augment(edge_path);
     }
     for(Edge *e:adj_lst[t]){ max_flow+=e->reverse->flow;}
+    
     auto end = std::chrono::high_resolution_clock::now();
-    elapsed_time = end - start; // Calculate elapsed time
+    elapsed_time = end - start;
+    last_mflow = max_flow;
+    
     return max_flow;
 }
 
@@ -183,18 +198,18 @@ void Graph::printMinimumPath(){
 
 void Graph::printBFSPath(){
     // Sum, Average, and Standard Deviation of BFS Iterations
-    if (!bfs_iterations.empty()) {
+    if (!bfs_count_op.empty()) {
         int sum = 0;
-        for (int iter : bfs_iterations) {
+        for (int iter : bfs_count_op) {
             sum += iter;
         }
-        double average = static_cast<double>(sum) / bfs_iterations.size();
+        double average = static_cast<double>(sum) / bfs_count_op.size();
 
         double variance = 0;
-        for (int iter : bfs_iterations) {
+        for (int iter : bfs_count_op) {
             variance += (iter - average) * (iter - average);
         }
-        double stddev = std::sqrt(variance / bfs_iterations.size());
+        double stddev = std::sqrt(variance / bfs_count_op.size());
 
         std::cout << "Sum of BFS Iterations: " << sum << std::endl;
         std::cout << "Average BFS Iterations: " << average << std::endl;
@@ -210,20 +225,45 @@ void Graph::printGraphInfo(){
 }
 
 void Graph::exportCSV() {
-    
-    // Collecting necessary data
-    int sum_iterations = 0, total_calls = bfs_iterations.size();
-    for (int iter : bfs_iterations) {
+    int sum_iterations = 0, total_calls = bfs_count_op.size();
+    for (int iter : bfs_count_op) {
         sum_iterations += iter;
     }
     double avg_iterations = total_calls > 0 ? static_cast<double>(sum_iterations) / total_calls : 0;
     double variance = 0;
-    for (int iter : bfs_iterations) {
+    for (int iter : bfs_count_op) {
         variance += (iter - avg_iterations) * (iter - avg_iterations);
     }
     double stddev_iterations = total_calls > 0 ? std::sqrt(variance / total_calls) : 0;
 
-    std::cout << V << ',' << M << ',' << bfs_calls << ',' << aug_calls << ','<< elapsed_time.count() << ',' << sum_iterations << ',' << avg_iterations << ',' << stddev_iterations << std::endl;
+    double C = 0.0; // fraction of critical edges
+    double r = 0.0; // average criticality
+    double s = 0.0; // sum of BFS iteration fractions
+    double t = 0.0; // sum of fractions of critical edges per iteration
+
+    // Calculate C and r
+    int num_critical_edges = 0;
+    for (const auto& edge_list : adj_lst) {
+        for (const Edge* edge : edge_list) {
+            if (edge->cpath_count > 0) {
+                num_critical_edges++;
+                double r_a = static_cast<double>(edge->cpath_count) / (V / 2);
+                r += r_a;
+            }
+        }
+    }           
+    C = static_cast<double>(num_critical_edges) / M;
+    r /= M;
+    int total_aug_paths = bfs_count_op.size();
+    for (size_t i = 0; i < bfs_count_op.size(); i++) {
+        double u_s = (static_cast<double>(visited_nodes_bfs[i])/V);
+        s += u_s / bfs_count_op.size();
+        double u_t = (static_cast<double>(visited_arcs_bfs[i])/M) / bfs_count_op.size();
+        t += u_t / bfs_count_op.size();
+    }
+    
+    double up_I = static_cast<double>(aug_calls)/(r*static_cast<double>(M)*static_cast<double>(V)/2);
+    std::cout << V << ';' << M << ';' << bfs_calls << ';' << aug_calls << ';'<< last_mflow  << ';' << elapsed_time.count() << ';' << sum_iterations << ';' << avg_iterations << ';' << stddev_iterations << ';' << C << ';' << r << ';' << s << ';' << t << ';' << up_I << std::endl;
 }
 
 Graph::~Graph() {
