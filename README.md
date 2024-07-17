@@ -1,31 +1,16 @@
 # EK-MaxFlowExperiement
 Assignment on Maximum Flow Problem - Advanced Algorithms Course (UFRGS) 
 
+*Branch exclusively for Matching Assignment*
 
+Matching assingment can be found here: https://github.com/schererl/hopcroft-Karp-Experiment
 
-# TODO:
-- [x] Count the number of operations in BFS.
-- [x] Count the number of augmentations.
-- [x] Count the number of times a single edge is saturated.
-- [x] Create a Bash script to run operations experiments.
-- [x] Python Notebook for plotting experiments.
-- [x] Compute the path size over each augmentation.
-- [x] Count the number of times each edge is a critical edge 
+This branch includes modifications to compare maximum matching reduction to a flow problem. Several pieces of irrelevant code have been removed, but some parts remain, I don't have time for it.
 
-# Assignment 
-## Deadline: May 1, 2024.
+running example:
 
-#### Objectives:
-- Implement the Edmonds-Karp algorithm to find the maximum s-t flow.
-- Experimentally verify the algorithm's complexity.
+```
+g++ graph.cpp main.cpp -o bip_flow; ./graph_generator 100 100 0.014 123 | ./bip_flow 
+``` 
 
-#### Test Cases:
-- A test case generator in DIMACS format in C is available [here](https://github.com/mrpritt/Fluxo_Maximo).
-
-#### Conventions:
-- Algorithm implementations should accept an instance in DIMACS format on standard input (stdin) and print the value of the maximum flow on standard output (stdout).
-
-#### Test Case Generator:
-- The maxflow.cpp code calculates the maximum flow. To compile: use C++ and Boost.
-
-
+ - You can get 'graph_generator' from hocroft-karp repo.

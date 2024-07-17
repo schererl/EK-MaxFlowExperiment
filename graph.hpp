@@ -24,7 +24,9 @@ private:
     
     std::chrono::duration<double> elapsed_time;
     int bfs_calls;
+    int bfs_operations;
     int aug_calls;
+    int max_aug_path;
     
 
 public:
@@ -37,16 +39,6 @@ public:
     int augment(std::vector<Edge*>&edge_path);
     int  EdmondsKarp();
     
-    // experimental stuff
-    void printPath(std::vector<Edge*>& edge_path);
-    void printVertex(int u);
-    void printGraph();
-    void printElapsedTime();
-    void printCritialPath();
-    void printMinimumPath();
-    void printBFSPath();
-    void printGraphInfo();
-    void exportCSV();
     ~Graph();
 };
 
